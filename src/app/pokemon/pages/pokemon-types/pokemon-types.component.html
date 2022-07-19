@@ -1,0 +1,8 @@
+<div class="animate__animated animate__fadeIn animate__faster">
+    <button *ngFor="let type of types" 
+            class="me-2"
+            [class]="getClassCSS(type)"
+            (click)="activateType(type)">
+        {{ type | titlecase }}
+    </button>
+</div>

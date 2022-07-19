@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-input',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PokemonInputComponent implements OnInit {
 
-  constructor() { }
+  debouncer: Subject<string> = new Subject();
+  
+  term: string = '';
 
   ngOnInit(): void {
   }
