@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 
-import { PokemonNumber, Result, Sprites, Type } from '../../interfaces/pokemon.interface';
+import { PokemonId, Result, Sprites } from '../../interfaces/pokemon.interface';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
@@ -10,10 +10,10 @@ import { PokemonService } from '../../services/pokemon.service';
   templateUrl: './pokemon-cards.component.html',
   styleUrls: ['./pokemon-cards.component.scss']
 })
-export class PokemonCardsComponent {
+export class PokemonCardsComponent implements OnInit {
 
   pokemons: Result[] = [];
-  // pokemonSprite!: Sprites;
+  pokemonSprite: Result[] = [];
   // pokemonType: Type[] = []
 
   constructor(
@@ -26,11 +26,32 @@ export class PokemonCardsComponent {
     //     this.getPokemon(params['id']);
     //   })
 
+    // getPokemonSprite(id: string) {
+    //   this.pokemonService.getPokemonsSprite(id)
+    //     .subscribe({
+    //       next: (pokemon) => {
+    //         console.log('sprite', pokemon)
+    //         this.pokemonSprite = pokemon
+    //       },
+    //       error: (err) => { 
+    //         console.log(err)
+    //       }
+    //     })
+    // }
+  // getPokemon() {
+  //   this.pokemonService.getAllPokemons()
+  //   .subscribe({
+  //     next: (pokemons) => {
+  //       console.log(pokemons);
+  //       this.pokemons = pokemons;
+  //     }
+  //   })
+  // }
   // getPokemon(id: string) {
   //   this.pokemonService.getPokemons(id)
   //     .subscribe({
   //       next: (pokemons) => {
-  //         this.pokemons = pokemons.name;
+  //         this.pokemons = pokemons;
   //         // this.pokemons = res;
   //         // this.pokemonSprite = this.pokemonSprite.front_default;
   //         // this.pokemonType = this.pokemonType;
@@ -42,10 +63,16 @@ export class PokemonCardsComponent {
 
     this.activateRoute.params
       .pipe(
-        switchMap( ({ id })  => this.pokemonService.getPokemons( id )),
+        switchMap( ()  => this.pokemonService.getAllPokemons()),
         tap(console.log)
       )
-      .subscribe( pokemon => this.pokemons = pokemon )
+      .subscribe( pokemon => {
+        this.pokemons = pokemon.results,
+        this.pokemonSprite = pokemon.results.forEach((result: { sprite: { front_default: string; }; }) => {
+          this.pokemonService.getPokemonsSprite(result.sprite.front_default),
+          console.log(result.sprite.front_default)
+        });
+      })
   }
 
 }

@@ -10,7 +10,7 @@ export interface Result {
     url:  string;
 }
 
-export interface PokemonNumber {
+export interface PokemonId {
     abilities:                Ability[];
     base_experience:          number;
     forms:                    Species[];
