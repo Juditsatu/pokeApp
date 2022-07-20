@@ -13,24 +13,13 @@ export class PokemonService {
 
   constructor( private http: HttpClient ) { }
   
-  getAllPokemons() {
-    const url = `${this.apiUrl}/pokemon/?limit=24`;
+  getPokemons() {
+    const url = `${this.apiUrl}/pokemon/?limit=18`;
     return this.http.get<Pokemon[]>(url);
   }
 
-  getPokemonsSprite(id: string) {
+  getPokemonsId(id: string): Observable<PokemonId[]> {
     const url = `${this.apiUrl}/pokemon/${ id }`;
     return this.http.get<PokemonId[]>(url);
   }
-
-  getPokemons(id: string): Observable<PokemonId[]> {
-    const url = `${this.apiUrl}/pokemon/${ id }`;
-    return this.http.get<PokemonId[]>(url);
-  }
-
-  getPokemonCount(): Observable<Pokemon> {
-    const url = `${this.apiUrl}/pokemon/`;
-    return this.http.get<Pokemon>(url);
-  }
-
 }

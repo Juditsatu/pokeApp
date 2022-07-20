@@ -12,7 +12,7 @@ import { PokemonService } from '../../services/pokemon.service';
 })
 export class PokemonCardsComponent implements OnInit {
 
-  pokemons: Result[] = [];
+  pokemons: PokemonId[] = [];
   pokemonSprite: Result[] = [];
   // pokemonType: Type[] = []
 
@@ -26,53 +26,36 @@ export class PokemonCardsComponent implements OnInit {
     //     this.getPokemon(params['id']);
     //   })
 
-    // getPokemonSprite(id: string) {
-    //   this.pokemonService.getPokemonsSprite(id)
-    //     .subscribe({
-    //       next: (pokemon) => {
-    //         console.log('sprite', pokemon)
-    //         this.pokemonSprite = pokemon
-    //       },
-    //       error: (err) => { 
-    //         console.log(err)
-    //       }
-    //     })
-    // }
-  // getPokemon() {
-  //   this.pokemonService.getAllPokemons()
-  //   .subscribe({
-  //     next: (pokemons) => {
-  //       console.log(pokemons);
-  //       this.pokemons = pokemons;
-  //     }
-  //   })
-  // }
-  // getPokemon(id: string) {
-  //   this.pokemonService.getPokemons(id)
-  //     .subscribe({
-  //       next: (pokemons) => {
-  //         this.pokemons = pokemons;
-  //         // this.pokemons = res;
-  //         // this.pokemonSprite = this.pokemonSprite.front_default;
-  //         // this.pokemonType = this.pokemonType;
-  //       },
-  //       error: (err) => { console.log(err) }
-  //     })
-  // }
   ngOnInit(): void {
-
-    this.activateRoute.params
-      .pipe(
-        switchMap( ()  => this.pokemonService.getAllPokemons()),
-        tap(console.log)
-      )
-      .subscribe( pokemon => {
-        this.pokemons = pokemon.results,
-        this.pokemonSprite = pokemon.results.forEach((result: { sprite: { front_default: string; }; }) => {
-          this.pokemonService.getPokemonsSprite(result.sprite.front_default),
-          console.log(result.sprite.front_default)
-        });
+    this.pokemonService.getPokemons()
+      .subscribe({
+        next: (response: any) => {
+          response.results.forEach((result: { name: string; }) => {
+            this.pokemonService.getPokemonsId(result.name)
+              .subscribe({
+                next: (response: any) => {
+                  this.pokemons.push(response);
+                  console.log(this.pokemons)
+                }
+              })
+          })
+        }
       })
   }
+  // ngOnInit(): void {
+
+  //   this.activateRoute.params
+  //     .pipe(
+  //       switchMap( ()  => this.pokemonService.getAllPokemons()),
+  //       tap(console.log)
+  //     )
+  //     .subscribe( pokemon => {
+  //       this.pokemons = pokemon.results,
+  //       this.pokemonSprite = pokemon.results.forEach((result: { sprite: { front_default: string; }; }) => {
+  //         this.pokemonService.getPokemonsId(result.sprite.front_default),
+  //         console.log(result.sprite.front_default)
+  //       });
+  //     })
+  // }
 
 }
