@@ -3,8 +3,7 @@ import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-input',
-  templateUrl: './pokemon-input.component.html',
-  styleUrls: ['./pokemon-input.component.scss']
+  templateUrl: './pokemon-input.component.html'
 })
 export class PokemonInputComponent implements OnInit {
 

@@ -1,0 +1,62 @@
+.card {
+    background-color:rgb(222, 223, 223);
+}
+.card:hover {
+    cursor: pointer;
+    background-color:cadetblue;
+}
+
+.card-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+    .card-title {
+        font-size: 1em;
+    }
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) { 
+
+    .card-title {
+        font-size: 1em;;
+    }
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+
+    .card-title {
+        font-size: 1em;
+    }
+
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+
+    .card-title {
+        font-size: 1.3em;
+    }
+    
+}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) { 
+
+    .card-title {
+        font-size: 1.3em;
+    }
+
+}
