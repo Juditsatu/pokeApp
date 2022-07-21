@@ -1,3 +1,133 @@
-<ng-template #divPokemon>
-    <h1>Pokemon info</h1>
-</ng-template>
+<div class="container m-4">
+    <div class="d-flex justify-content-between m-2">
+        <h1>{{ pokemon.name | titlecase }}</h1>
+        <button [routerLink]="['']" class="btn btn-outline-dark ">Back Home</button>
+    </div>
+    
+    <div class="col-12 p-3 bg-light">
+      
+        <div class="row">
+
+            <div class="col-2">
+                <h3>Height</h3>
+                <h5> {{ pokemon.height }} ft </h5>
+            </div>
+            <div class="col-4">
+                <h3>Abilities</h3>
+                <h5 *ngFor="let ability of pokemon.abilities | keyvalue"> {{ ability }} </h5>
+            </div>
+            <div class="col-2">
+                <h3>Types</h3>
+                <h5> {{ pokemon.types }} </h5>
+            </div>
+            <div class="col-2">
+                <h3>Weight</h3>
+                <h5> {{ pokemon.weight }} lbs </h5>
+            </div>
+            <div class="col">
+                <img [src]="pokemon.sprites.front_default" alt="{{ pokemon.name }}">
+                <!-- <img src="{{pokemon.sprites.other['official-artwork'].front_default}}" class="img-fluid w-100 p-2 mx-auto d-block" alt="..."> -->
+
+            </div>
+            <!-- [src]="pokemon.sprites.other['official-artwork'].front_default" -->
+        </div>
+        <div class="col-6">
+            <h3>Base Stats</h3>
+            <table class="table">
+                <!-- <thead>
+                    <tr>
+                        <th scope="col">Base Stats#</th>
+                    </tr>
+                </thead> -->
+                <tbody class="table-hover">
+                    <tr>
+                        <th scope="row">HP</th>
+                        <td>{{ pokemon.stats[0].base_stat }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Attack</th>
+                        <td>{{ pokemon.stats[1].base_stat }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Defense</th>
+                        <td>{{ pokemon.stats[2].base_stat }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Special Attack</th>
+                        <td>{{ pokemon.stats[3].base_stat }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Special Defense</th>
+                        <td>{{ pokemon.stats[4].base_stat }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Speed</th>
+                        <td>{{ pokemon.stats[5].base_stat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="col-12 p-3 bg-light mt-3">
+        <h3>Species Information</h3>
+        <div class="row">
+
+            <div class="col">
+                <h3>Name</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Generation</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Genus</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Color</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Habitat</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Capture rate</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Growth rate</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+            <div class="col">
+                <h3>Varieties</h3>
+                <p> {{ pokemon.name }} </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-12 p-3 bg-light mt-3">
+        <h3>Evolution Chain</h3>
+
+        <div class="row row-cols-1 row-cols-lg-6 row-cols-md-4 row-cols-sm-4 g-4 text-center mt-2">
+            <div  class="col">
+
+            <div class="card bg-light animate__animated animate__animated animate__fadeInUp">
+                <div class="card-body">
+                <h5 class="card-title"> {{ pokemon.name | titlecase }} </h5>
+                <img [src]="pokemon.sprites.front_default" class="img-fluid rounded-start" alt="{{ pokemon.name }}">
+                </div>
+            </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  
+</div>

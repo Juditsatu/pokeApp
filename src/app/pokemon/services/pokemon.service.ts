@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Pokemon, PokemonId } from '../interfaces/pokemon.interface';
+import { Other, Pokemon, PokemonId } from '../interfaces/pokemon.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class PokemonService {
 
   constructor( private http: HttpClient ) { }
   
-  getPokemons() {
+  getPokemons(): Observable<Pokemon[]> {
     const url = `${this.apiUrl}/pokemon/?limit=18`;
     return this.http.get<Pokemon[]>(url);
   }
@@ -22,4 +22,5 @@ export class PokemonService {
     const url = `${this.apiUrl}/pokemon/${ id }`;
     return this.http.get<PokemonId[]>(url);
   }
+
 }
