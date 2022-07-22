@@ -1,9 +1,9 @@
 .card {
-    background-color:rgb(242, 242, 242);
+    border: 0;
 }
+
 .card:hover {
     cursor: pointer;
-    background-color:rgb(151, 162, 236);
 }
 
 .card-title {

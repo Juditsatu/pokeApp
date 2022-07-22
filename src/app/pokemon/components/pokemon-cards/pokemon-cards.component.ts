@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { PokemonId } from '../../interfaces/pokemon.interface';
 import { PokemonService } from '../../services/pokemon.service';
@@ -11,17 +10,15 @@ import { PokemonService } from '../../services/pokemon.service';
 })
 export class PokemonCardsComponent implements OnInit {
 
-  pokemons: PokemonId[] = [];
+  @Input() pokemons: PokemonId[] = [];
+  term: string = '';
+  anError: boolean = false
 
-  constructor(
-    private activateRoute: ActivatedRoute,
-    private pokemonService: PokemonService
-  ) { }
-  
-    // this.activateRoute.params.subscribe(
-    //   params => {
-    //     this.getPokemon(params['id']);
-    //   })
+  pokemonSuggested: PokemonId[] = [];
+  showSuggestions: boolean = false;
+
+
+  constructor( private pokemonService: PokemonService ) { }
 
   ngOnInit(): void {
     this.pokemonService.getPokemons()
@@ -39,20 +36,85 @@ export class PokemonCardsComponent implements OnInit {
         }
       })
   }
-  // ngOnInit(): void {
 
-  //   this.activateRoute.params
-  //     .pipe(
-  //       switchMap( ()  => this.pokemonService.getAllPokemons()),
-  //       tap(console.log)
-  //     )
-  //     .subscribe( pokemon => {
-  //       this.pokemons = pokemon.results,
-  //       this.pokemonSprite = pokemon.results.forEach((result: { sprite: { front_default: string; }; }) => {
-  //         this.pokemonService.getPokemonsId(result.sprite.front_default),
-  //         console.log(result.sprite.front_default)
-  //       });
-  //     })
+  // search(term: string) {
+  //   this.anError = false
+  //   this.term = term;
+  //   this.showSuggestions = false;
+
+  //   this.pokemonService.getPokemonsId(term)
+  //     .subscribe({
+  //       next: (pokemon) => {
+  //         console.log(pokemon);
+  //         this.pokemons = pokemon;
+  //       },
+  //       error: () => {
+  //         this.anError = true;
+  //         this.pokemons = [];
+  //       }
+  //     });
+  // };
+  // search(term: string) {
+  //   this.anError = false
+  //   this.term = term;
+  //   this.showSuggestions = false;
+
+  //   this.pokemonService.getPokemons()
+  //   .subscribe({
+  //     next: (response: any) => {
+  //       response.results.forEach((result: { name: string; }) => {
+  //         this.pokemonService.getPokemonsId(result.name)
+  //           .subscribe({
+  //             next: (response: any) => {
+  //               this.pokemons.push(response);
+  //               console.log(this.pokemons)
+  //             }
+  //           })
+  //       })
+  //     },
+  //     error: () => {
+  //       this.anError = true;
+  //       this.pokemons = [];
+  //       }
+  //   });
+  // };
+
+  // suggestions(term: string) {
+  //   this.anError = false
+  //   this.term = term;
+  //   this.showSuggestions = false;
+
+  //   this.pokemonService.getPokemonsId(term)
+  //   .subscribe({
+  //     next: (pokemons) => {this.pokemonSuggested = pokemons},
+  //     error: () => {this.pokemonSuggested = []}
+  //   })
   // }
+
+  // searchSuggested(term: string) {
+  //   this.search(term);
+  // }
+  // // this.pokemonService.getPokemons()
+  // //     .subscribe({
+  // //       next: (response: any) => {
+  // //         response.results.forEach((result: { name: string; }) => {
+  // //           this.pokemonService.getPokemonsId(result.name)
+  // //             .subscribe({
+  // //               next: (response: any) => {
+  // //                 this.pokemons.push(response);
+  // //                 console.log(this.pokemons)
+  // //               }
+  // //             })
+  // //         })
+  // //       },
+  // //       error: () => {
+  // //         this.anError = true;
+  // //         this.pokemons = [];
+  // //       }
+  // //     });
+
+  getTypeColor(pokemon: PokemonId): string {
+    return this.pokemonService.getPokemonType(pokemon);
+  }
 
 }

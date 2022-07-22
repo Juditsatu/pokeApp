@@ -1,15 +1,17 @@
-<h2 class="mt-4 text-center">Choose your pokemon!</h2>
-<div class="row row-cols-1 row-cols-lg-6 row-cols-md-4 row-cols-sm-4 g-4 text-center mt-2">
-  
-    <div  class="col" *ngFor="let pokemon of pokemons; let i = index">
-
-      <div class="card shadow border-0 animate__animated animate__animated animate__fadeInUp">
-        <div class="card-body" [routerLink]="['/pokemon', pokemon.name]">
-          <h5 class="card-title"> {{ pokemon.name | titlecase }} </h5>
-          <img [src]="pokemon.sprites.front_default" class="card-img-bottom" alt="{{ pokemon.name }}">
-        </div>
+<div
+  class="row row-cols-1 row-cols-lg-6 row-cols-md-4 row-cols-sm-4 g-4 text-center mt-2">
+  <div class="col" *ngFor="let pokemon of pokemons">
+    <div
+      class="card bg-{{ getTypeColor(pokemon) }} 
+      shadow animate__animated animate__animated animate__fadeInUp">
+      <div class="card-body" [routerLink]="['/pokemon', pokemon.name]">
+        <h5 class="card-title">{{ pokemon.name | titlecase }}</h5>
+        <img
+          [src]="pokemon.sprites.front_default"
+          class="card-img-bottom"
+          alt="{{ pokemon.name }}"
+        />
       </div>
-
     </div>
-
+  </div>
 </div>

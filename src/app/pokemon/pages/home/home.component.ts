@@ -13,15 +13,62 @@ import { PokemonService } from '../../services/pokemon.service';
 })
 export class HomeComponent implements OnInit {
 
+  
+  @Input() pokemons: PokemonId[] = [];
+  term: string = '';
+  anError: boolean = false
+  
   loading: boolean = false;
   subscriptions: Subscription[] = [];
   
-  @Input() pokemons: PokemonId[] = [];
+  pokemonSuggested: PokemonId[] = [];
+  showSuggestions: boolean = false;
 
   constructor( 
     private activateRoute: ActivatedRoute,
     private pokemonService: PokemonService
   ) { }
+
+  search(term: string) {
+    this.anError = false
+    this.term = term;
+    this.showSuggestions = false;
+
+    this.pokemonService.getPokemons()
+    .subscribe({
+      next: (response: any) => {
+        response.results.forEach((result: { name: string; }) => {
+          this.pokemonService.getPokemonsId(result.name)
+            .subscribe({
+              next: (response: any) => {
+                this.pokemons.push(response);
+                console.log(this.pokemons)
+              }
+            })
+        })
+      },
+      error: () => {
+        this.anError = true;
+        this.pokemons = [];
+        }
+    });
+  };
+
+  suggestions(term: string) {
+    this.anError = false
+    this.term = term;
+    this.showSuggestions = false;
+
+    this.pokemonService.getPokemonsId(term)
+    .subscribe({
+      next: (pokemons) => {this.pokemonSuggested = pokemons},
+      error: () => {this.pokemonSuggested = []}
+    })
+  }
+
+  searchSuggested(term: string) {
+    this.search(term);
+  }
 
   ngOnInit(): void {
     if (!this.pokemons.length) {

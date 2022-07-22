@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 
@@ -11,6 +11,8 @@ import { PokemonService } from '../../services/pokemon.service';
   styleUrls: ['./pokemon-info.component.scss']
 })
 export class PokemonInfoComponent implements OnInit {
+
+  @Input() pokemons: PokemonId[] = [];
 
   pokemon!: PokemonId;
   pokemonEvo!: EvolutionDetail;
@@ -40,9 +42,9 @@ export class PokemonInfoComponent implements OnInit {
         tap(console.log)
       )
       .subscribe( pokemonEvo => this.pokemonEvo.trigger.name = pokemonEvo )
-    
        
   }
+  
 
 //   ngOnInit(): void {
 //     this.subscription = this.route.params.subscribe(params => {

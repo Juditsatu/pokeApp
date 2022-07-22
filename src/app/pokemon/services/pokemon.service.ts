@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Other, Pokemon, PokemonId, EvolutionChain, EvolutionPokemon } from '../interfaces/pokemon.interface';
+import { Other, Pokemon, PokemonId, EvolutionChain, EvolutionPokemon, Type } from '../interfaces/pokemon.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +46,11 @@ export class PokemonService {
 
   getPokemonType(pokemon: PokemonId): string {
     return pokemon && pokemon.types.length > 0 ? pokemon.types[0].type.name : '';
+  }
+
+  searchType(name: string): Observable<PokemonId[]> {
+    const url = `${this.apiUrl}/types/${ name }`;
+    return this.http.get<PokemonId[]>(url);
   }
 
   getPokemonEvo(id: number): Observable<EvolutionPokemon> {

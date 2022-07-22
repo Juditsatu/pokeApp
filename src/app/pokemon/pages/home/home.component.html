@@ -5,30 +5,58 @@
       <h3 class="display-1 text-center">Poke App</h3>
       
       <!-- Search -->
-      <app-pokemon-input></app-pokemon-input>
-  
+      <app-pokemon-input
+      (onEnter)="search($event)"
+      (onDebounce)="suggestions($event)">
+
+      <ul *ngIf="showSuggestions" class="list-group">
+        <li *ngFor="let pokemon of pokemonSuggested"
+            class="list-group-item list-group-item-action">
+            <a class="nav-link"
+            [routerLink]="['/pokemon', pokemon.name]">
+            {{ pokemon.name }}
+            </a>
+        </li>
+        <li class="list-group-item list-group-item-action"
+            (click)="searchSuggested(term)">
+            <a class="nav-link">
+            Buscar "{{ term }}"
+            </a>
+        </li>
+      </ul>
+
+      </app-pokemon-input>
+
       <!-- Types -->
       <div class="row">
         <div class="col">
             <app-pokemon-types></app-pokemon-types>
         </div>
       </div>  
+
       <!-- pokemon cards -->
       <div class="row">
         <div class="col">
           <app-pokemon-cards></app-pokemon-cards>
+            <!-- <div *ngIf="anError"
+                  class="alert alert-danger">
+                  Can't find the pokemon
+            </div>
+            <div *ngFor="let pokemon of pokemons" >
+              <app-pokemon-cards *ngIf="term === pokemon.name" [pokemons]="pokemons"></app-pokemon-cards>
+            </div> -->
         </div>
       </div>
   
     </div>
   
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm text-center">
           <button class="btn btn-sm btn-secondary" (click)="loadMore()">
               <div class="spinner-border spinner-border-sm" role="status" *ngIf="loading"></div>
               {{loading ? 'Loading...' : 'Load More'}}
           </button>
       </div>
-  </div>
+    </div> -->
   
 </div>

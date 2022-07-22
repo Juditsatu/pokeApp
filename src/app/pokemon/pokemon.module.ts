@@ -8,6 +8,7 @@ import { PokemonInfoComponent } from './pages/pokemon-info/pokemon-info.componen
 import { PokemonInputComponent } from './components/pokemon-input/pokemon-input.component';
 import { PokemonCardsComponent } from './components/pokemon-cards/pokemon-cards.component';
 import { PokemonTypesComponent } from './components/pokemon-types/pokemon-types.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -25,7 +26,8 @@ import { PokemonTypesComponent } from './components/pokemon-types/pokemon-types.
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ]
 })
 export class PokemonModule { }
