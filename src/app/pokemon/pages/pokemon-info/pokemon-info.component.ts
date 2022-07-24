@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 
-import { EvolutionDetail, PokemonId, Chain, EvolutionPokemon, Species } from '../../interfaces/pokemon.interface';
+import { Chain, EvolutionDetail, EvolutionPokemon, PokemonId, SpeciesId } from '../../interfaces/pokemon.interface';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
@@ -12,20 +12,26 @@ import { PokemonService } from '../../services/pokemon.service';
 })
 export class PokemonInfoComponent implements OnInit {
 
-  @Input() pokemons: PokemonId[] = [];
+  pokemons: PokemonId[] = [];
+  evolutionId: number = 0;
 
+  pokemonEvo: any = null;
+
+  pokemonEvolution: {
+    name: string,
+    id: number
+  }[] = [];
+
+  pokemonEvolutionChain: any;
+
+  pokemonsSpecie!: SpeciesId;
   pokemon!: PokemonId;
-  pokemonEvo!: EvolutionDetail;
-
-  currentSpecies!: Species;
-  evolutionChain!: any;
-  evoChainClean: any[] = []
-  
 
   constructor(
     private activateRoute: ActivatedRoute,
     private pokemonService: PokemonService
   ) { }
+
 
   ngOnInit(): void {
 
@@ -38,119 +44,126 @@ export class PokemonInfoComponent implements OnInit {
 
     this.activateRoute.params
       .pipe(
-        switchMap( ({ id }) => this.pokemonService.getPokemonEvo( id )),
+        switchMap( ({ id }) => this.pokemonService.getSpecies( id )),
         tap(console.log)
       )
-      .subscribe( pokemonEvo => this.pokemonEvo.trigger.name = pokemonEvo )
-       
+      .subscribe( specie => this.pokemonsSpecie = specie )
+
+    this.activateRoute.params
+      .pipe(
+        switchMap( ({ id }) => this.pokemonService.getSpecies( id )),
+        tap(console.log)
+      )
+      .subscribe({
+        next: (evolution) => {
+          this.evolutionId = evolution.evolution_chain.url.split('/').at(-2)
+          this.pokemonService.getEvolution(this.evolutionId)
+            .subscribe({
+              next: (data: any) => {
+
+                this.pokemonEvolution.push({
+                  name: data.chain.species.name,
+                  id: data.chain.species.url.split('/').at(-2)
+                })
+
+                //Gets first evolution/s
+                if (data.chain.evolves_to.length) {
+                  for(let i = 0; i < data.chain.evolves_to.length; i++) {
+                    this.pokemonEvolution.push({
+                      name: data.chain.evolves_to[i].species.name,
+                      id: data.chain.evolves_to[i].species.url.split('/').at(-2)
+                    })
+                  }
+                }
+
+                //Gets the 3rd Evolution in case it exists
+                if (data.chain.evolves_to[0].evolves_to.length) {
+                  this.pokemonEvolution.push({
+                    name: data.chain.evolves_to[0].evolves_to[0].species.name,
+                    id: data.chain.evolves_to[0].evolves_to[0].species.url.split('/').at(-2)
+                  })
+                }
+
+                console.log('evo info',data)
+                console.log('evolutions',this.pokemonEvolution)
+              }
+            })
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+
   }
   
 
-//   ngOnInit(): void {
-//     this.subscription = this.route.params.subscribe(params => {
+  // next: (data: any) => {
+  //   do {
+  //     this.pokemonEvolution.push({
+  //       name: data.species.name,
+  //       id: data.species.url.split('/').at(-2)
+  //     })
+  //     data = data.evolves_to[0];
+  //   } while (!!data && data.hasOwnProperty('evolves_to'));
 
-//         if (this.pokemonService.pokemons.length) {
-//             this.pokemon = this.pokemonService.pokemons.find(i => i.name === params.name);
-//             if (this.pokemon) {
-//                 this.getEvolution();
-// 		  return;
-//             }
-//         }
+  //   console.log('evo info',data)
+  //   console.log('evolutions',this.pokemonEvolution)
+  //   this.pokemonEvolutionChain = data;
+  //   }
 
-//         this.subscription = this.pokemonService.get(params.name).subscribe(response => {
-//             this.pokemon = response;
-//             this.getEvolution();
-//         }, error => console.log('Error Occurred:', error));
-//     });
-// }
-
-//   getEvolution() {
-//     if (!this.pokemon.evolutions || !this.pokemon.evolutions.length) {
-//         this.pokemon.evolutions = [];
-//         this.subscription = this.pokemonService.getSpecies(this.pokemon.name)
-//             .subscribe(response => {
-//                 const id = this.getId(response.evolution_chain.url);
-//                 this.subscription = this.pokemonService.getEvolution(id)
-//                     .subscribe(response => this.getEvolves(response.chain));
-//             });
-//     }
-// }
-  // getEvolutionChainInfo(url: string) {
-  //   this.pokemonService.getPokemonEvo(url).subscribe((resultObject) => {
-  //     var evoData = resultObject.chain;
-  //     do {
-  //       var evoDetails = evoData['evolution_details'][0];
-
-  //       this.evoChainClean.push({
-  //         species_name: evoData.species.name,
-  //         min_level: !evoDetails ? 1 : evoDetails.min_level,
-  //         trigger_name: !evoDetails ? null : evoDetails.trigger.name,
-  //         item: !evoDetails ? null : evoDetails.item,
-  //       });
-  //       evoData = evoData['evolves_to'][0];
-  //     } while (!!evoData && evoData.hasOwnProperty('evolves_to'));
-  //     console.log(this.evoChainClean, 'clean Evo Chain');
-  //     this.evolutionChain = resultObject;
-  //     console.log('???',resultObject)
-  //   });
-  // }
   // .subscribe({
-  //   next: (response: any) => {
-  //     response.results.forEach((result: { name: string; }) => {
-  //       this.pokemonService.getPokemonEvo(result)
+  //   next: (response: Pokemon) => {
+  //     response.results.forEach((result: {name: string }) => {
+  //       this.pokemonService.getPokemonsId(result.name)
   //         .subscribe({
   //           next: (response: any) => {
-  //             this.pokemonEvo.evolution_details.push(response);
-  //             console.log(this.pokemonEvo)
+  //             this.pokemons.push(response);
+  //             console.log(this.pokemons)
   //           }
   //         })
   //     })
+  //     console.log("API", response);
+  //   },
+
+
+
+
+  getEvolution() {
+
+  }
+
+  getEvolves(chain: any) {
+    this.pokemonEvo.push({
+      id: chain.species.url.split('/').at(-2),
+      name: chain.species.name
+    });
+
+    if (chain.evolves_to.length) {
+      this.getEvolves(chain.evolves_to[0]);
+    };
+  }
+
+
+  // next: (response: any) => {
+  //   this.pokemonEvolution = {
+  //     name: response.chain.species.name,
+  //     id: response.chain.species.url.split('/').at(-2)
   //   }
-  // })
-  // ngOnInit(): void {
-  //   this.pokemonService.getPokemons()
-  //     .subscribe({
-  //       next: (response: any) => {
-  //         response.results.forEach((result: { name: string; }) => {
-  //           this.pokemonService.getPokemonsId(result.name)
-  //             .subscribe({
-  //               next: (response: any) => {
-  //                 this.pokemons.push(response);
-  //                 console.log(this.pokemons)
-  //               }
-  //             })
-  //         })
-  //       }
-  //     })
+  //   console.log('evo info',response)
   // }
-  // let evoChain = [];
-  // let evoData = chain.chain;
 
-  // do {
-  //   let numberOfEvolutions = evoData['evolves_to'].length;  
 
-  //   evoChain.push({
-  //     "species_name": evoData .species.name,
-  //     "min_level": !evoData ? 1 : evoData .min_level,
-  //     "trigger_name": !evoData ? null : evoData .trigger.name,
-  //     "item": !evoData ? null : evoData .item
-  //   });
+  // next: (response: any) => {
+  //   this.pokemonEvo = this.getEvolves(response.chain)
 
-  //   if(numberOfEvolutions > 1) {
-  //     for (let i = 1;i < numberOfEvolutions; i++) { 
-  //       evoChain.push({
-  //         "species_name": evoData.evolves_to[i].species.name,
-  //         "min_level": !evoData.evolves_to[i]? 1 : evoData.evolves_to[i].min_level,
-  //         "trigger_name": !evoData.evolves_to[i]? null : evoData.evolves_to[i].trigger.name,
-  //         "item": !evoData.evolves_to[i]? null : evoData.evolves_to[i].item
-  //     });
-  //     }
-  //   }        
+  //   if (response.chain.evolves_to.length) {
+  //     this.getEvolves(response.chain.evolves_to[0])
+  //   }
+  //   console.log('?',this.pokemonEvo)
+  // }
 
-  //   evoData = evoData['evolves_to'][0];
+  getTypeColor(pokemon: PokemonId): string {
+    return this.pokemonService.getType(pokemon);
+  }
 
-  // } while (!!evoData && evoData.hasOwnProperty('evolves_to'));
-
-  // return evoChain;
-  
 }

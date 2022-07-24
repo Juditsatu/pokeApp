@@ -6,8 +6,9 @@
       shadow animate__animated animate__animated animate__fadeInUp">
       <div class="card-body" [routerLink]="['/pokemon', pokemon.name]">
         <h5 class="card-title">{{ pokemon.name | titlecase }}</h5>
+        <!-- [src]="pokemon.sprites.front_default" -->
         <img
-          [src]="pokemon.sprites.front_default"
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.id }}.png"
           class="card-img-bottom"
           alt="{{ pokemon.name }}"
         />

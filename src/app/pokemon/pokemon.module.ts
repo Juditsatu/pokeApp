@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HomeComponent } from './pages/home/home.component';
 import { PokemonInfoComponent } from './pages/pokemon-info/pokemon-info.component';
@@ -8,7 +9,6 @@ import { PokemonInfoComponent } from './pages/pokemon-info/pokemon-info.componen
 import { PokemonInputComponent } from './components/pokemon-input/pokemon-input.component';
 import { PokemonCardsComponent } from './components/pokemon-cards/pokemon-cards.component';
 import { PokemonTypesComponent } from './components/pokemon-types/pokemon-types.component';
-import { FormsModule } from '@angular/forms';
 
 
 
@@ -27,7 +27,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PokemonModule { }

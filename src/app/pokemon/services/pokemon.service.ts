@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Other, Pokemon, PokemonId, EvolutionChain, EvolutionPokemon, Type } from '../interfaces/pokemon.interface';
+import { Pokemon, PokemonId, EvolutionPokemon, SpeciesId } from '../interfaces/pokemon.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,28 +10,17 @@ import { Other, Pokemon, PokemonId, EvolutionChain, EvolutionPokemon, Type } fro
 export class PokemonService {
 
   private apiUrl: string = 'https://pokeapi.co/api/v2';
-  private _pokemons: PokemonId[] = [];
-  private _next: string = '';
+  private _pokemons: any[] = [];
 
-  constructor( private http: HttpClient ) { }
-
-  get pokemons(): PokemonId[] {
+  get pokemons(): any[] {
     return this._pokemons;
   }
 
-  get next(): string {
-    return this._next;
-  }
-  
-  //
-  getPokemons(): Observable<Pokemon[]> {
-    const url = `${this.apiUrl}/pokemon/?limit=24`;
-    return this.http.get<Pokemon[]>(url);
-  }
+  constructor( private http: HttpClient ) { }
 
-  getPokemonName(name: string): Observable<PokemonId> {
-    const url = `${this.apiUrl}${name}`;
-    return this.http.get<PokemonId>(url);
+  getPokemons(): Observable<Pokemon> {
+    const url = `${this.apiUrl}/pokemon/?limit=24`;
+    return this.http.get<Pokemon>(url);
   }
 
   getPokemonsId(id: string): Observable<PokemonId[]> {
@@ -39,12 +28,7 @@ export class PokemonService {
     return this.http.get<PokemonId[]>(url);
   }
 
-  getNextPokemon(): Observable<Pokemon> {
-    const url = this.next === '' ? `${this.apiUrl}?limit=24` : this.next;
-    return this.http.get<Pokemon>(url);
-  }
-
-  getPokemonType(pokemon: PokemonId): string {
+  getType(pokemon: PokemonId): string {
     return pokemon && pokemon.types.length > 0 ? pokemon.types[0].type.name : '';
   }
 
@@ -53,9 +37,14 @@ export class PokemonService {
     return this.http.get<PokemonId[]>(url);
   }
 
-  getPokemonEvo(id: number): Observable<EvolutionPokemon> {
+  getEvolution(id: number): Observable<EvolutionPokemon[]> {
     const url = `${this.apiUrl}/evolution-chain/${ id }`;
-    return this.http.get<EvolutionPokemon>(url);
+    return this.http.get<EvolutionPokemon[]>(url);
+  }
+
+  getSpecies(id: string): Observable<SpeciesId> {
+    const url = `${this.apiUrl}/pokemon-species/${ id }`;
+    return this.http.get<SpeciesId>(url);
   }
 
 }

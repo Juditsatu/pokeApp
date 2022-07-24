@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Pokemon } from '../../interfaces/pokemon.interface';
+import { Pokemon, PokemonId } from '../../interfaces/pokemon.interface';
 
 import { PokemonService } from '../../services/pokemon.service';
 
@@ -36,21 +36,21 @@ export class PokemonTypesComponent implements OnInit {
 
   activeType: string = '';
 
-  pokemons: Pokemon[] = [];
+  pokemons: PokemonId[] = [];
 
-  // constructor(private pokemonService: PokemonService) {}
+  constructor(private pokemonService: PokemonService) {}
 
   getClassCSS( type: string ): string {
     return (type === this.activeType ) ? 'btn btn-primary' : 'btn btn-outline-primary'
   }
 
-  activateType( type: string ) {
+  activateType( type: any ) {
 
     if ( type === this.activeType ) { return }
 
     this.activeType = type;
-    // this.pokemonService.searchType( type )
-    //   .subscribe( pokemons => this.pokemons = pokemons );
+    this.pokemonService.searchType( type )
+      .subscribe( pokemons => this.pokemons = pokemons );
 
   }
 

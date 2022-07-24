@@ -19,7 +19,9 @@
       <div class="col">
         <h3>Types</h3>
         <h5 *ngFor="let type of pokemon.types">
-          {{ type.type.name }}
+          <span class="badge bg-{{ getTypeColor(pokemon) }} me-2">
+            {{ type.type.name | titlecase }}
+          </span>
         </h5>
       </div>
       <div class="col">
@@ -27,8 +29,9 @@
         <h5>{{ pokemon.weight }} lbs</h5>
       </div>
       <div class="col">
+        <!-- src="{{pokemon.sprites.other?.['official-artwork']?.front_default}}" -->
         <img 
-        src="{{pokemon.sprites.other?.['official-artwork']?.front_default}}"
+        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{{ pokemon.id }}.png"
         alt="{{ pokemon.name }}"
         class="img-fluid" />
       </div>
@@ -75,31 +78,33 @@
       </div>
       <div class="col">
         <h3>Generation</h3>
-        <p  >{{ pokemon.name }}</p>
+        <p  >{{ pokemonsSpecie.generation.name | titlecase }}</p>
       </div>
       <div class="col">
         <h3>Genus</h3>
-        <p>{{ pokemon.name }}</p>
+        <p>{{ pokemonsSpecie.genera[0].genus }}</p>
       </div>
       <div class="col">
         <h3>Color</h3>
-        <p>{{ pokemon.name }}</p>
+        <p>{{ pokemonsSpecie.color.name | titlecase }}</p>
       </div>
       <div class="col">
         <h3>Habitat</h3>
-        <p>{{ pokemon.name }}</p>
+        <p>{{ pokemonsSpecie.habitat.name | titlecase }}</p>
       </div>
       <div class="col">
         <h3>Capture rate</h3>
-        <p>{{ pokemon.name }}</p>
+        <p>{{ pokemonsSpecie.capture_rate }}</p>
       </div>
       <div class="col">
         <h3>Growth rate</h3>
-        <p>{{ pokemon.name }}</p>
+        <p>{{ pokemonsSpecie.growth_rate.name | titlecase }}</p>
       </div>
       <div class="col">
         <h3>Varieties</h3>
-        <p>{{ pokemon.name }}</p>
+        <p *ngFor="let varieties of pokemonsSpecie.varieties.slice(0,5)"
+          class="badge bg-secondary">
+          {{ varieties.pokemon.name | titlecase }}</p>
       </div>
     </div>
   </div>
@@ -110,21 +115,24 @@
     <div
       class="row row-cols-1 row-cols-lg-6 row-cols-md-4 row-cols-sm-4 g-4 text-center mt-2"
     >
-    <div class="row">
-      <div class="col">
-        <div
-          class="card bg-light animate__animated animate__animated animate__fadeInUp"
-        >
-          <div class="card-body">
-            <h5 class="card-title">{{ pokemon.name | titlecase }}</h5>
-            <img
-              [src]="pokemon.sprites.front_default"
-              class="img-fluid rounded-start"
-              alt="{{ pokemon.name }}"
-            />
+      <div class="row mb-3" *ngFor="let evolution of pokemonEvolution"
+      >
+        <div class="col">
+          <div
+            class="card bg-light animate__animated animate__animated animate__fadeIn"
+          >
+            <div class="card-body">
+              <h5 class="card-title"> {{ evolution.name | titlecase }} </h5>
+              <!-- [src]="pokemon.sprites.front_default" -->
+              <img
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ evolution.id }}.png"
+                class="img-fluid rounded-start"
+                alt="{{ evolution.name }}"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+   
   </div>
 </div>
