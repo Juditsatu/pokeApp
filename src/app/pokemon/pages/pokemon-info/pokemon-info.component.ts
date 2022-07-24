@@ -8,21 +8,23 @@ import { PokemonService } from '../../services/pokemon.service';
 @Component({
   selector: 'app-pokemon-info',
   templateUrl: './pokemon-info.component.html',
-  styleUrls: ['./pokemon-info.component.scss']
+  styles: [
+    `
+    .card {
+      cursor: pointer;
+    }
+    `
+  ]
 })
 export class PokemonInfoComponent implements OnInit {
 
   pokemons: PokemonId[] = [];
   evolutionId: number = 0;
 
-  pokemonEvo: any = null;
-
   pokemonEvolution: {
     name: string,
     id: number
   }[] = [];
-
-  pokemonEvolutionChain: any;
 
   pokemonsSpecie!: SpeciesId;
   pokemon!: PokemonId;
@@ -61,28 +63,7 @@ export class PokemonInfoComponent implements OnInit {
             .subscribe({
               next: (data: any) => {
 
-                this.pokemonEvolution.push({
-                  name: data.chain.species.name,
-                  id: data.chain.species.url.split('/').at(-2)
-                })
-
-                //Gets first evolution/s
-                if (data.chain.evolves_to.length) {
-                  for(let i = 0; i < data.chain.evolves_to.length; i++) {
-                    this.pokemonEvolution.push({
-                      name: data.chain.evolves_to[i].species.name,
-                      id: data.chain.evolves_to[i].species.url.split('/').at(-2)
-                    })
-                  }
-                }
-
-                //Gets the 3rd Evolution in case it exists
-                if (data.chain.evolves_to[0].evolves_to.length) {
-                  this.pokemonEvolution.push({
-                    name: data.chain.evolves_to[0].evolves_to[0].species.name,
-                    id: data.chain.evolves_to[0].evolves_to[0].species.url.split('/').at(-2)
-                  })
-                }
+                this.getEvolution(data)
 
                 console.log('evo info',data)
                 console.log('evolutions',this.pokemonEvolution)
@@ -95,72 +76,34 @@ export class PokemonInfoComponent implements OnInit {
       })
 
   }
-  
 
-  // next: (data: any) => {
-  //   do {
-  //     this.pokemonEvolution.push({
-  //       name: data.species.name,
-  //       id: data.species.url.split('/').at(-2)
-  //     })
-  //     data = data.evolves_to[0];
-  //   } while (!!data && data.hasOwnProperty('evolves_to'));
+  getEvolution(data: any) {
 
-  //   console.log('evo info',data)
-  //   console.log('evolutions',this.pokemonEvolution)
-  //   this.pokemonEvolutionChain = data;
-  //   }
+    this.pokemonEvolution = [];
 
-  // .subscribe({
-  //   next: (response: Pokemon) => {
-  //     response.results.forEach((result: {name: string }) => {
-  //       this.pokemonService.getPokemonsId(result.name)
-  //         .subscribe({
-  //           next: (response: any) => {
-  //             this.pokemons.push(response);
-  //             console.log(this.pokemons)
-  //           }
-  //         })
-  //     })
-  //     console.log("API", response);
-  //   },
+    this.pokemonEvolution.push({
+      name: data.chain.species.name,
+      id: data.chain.species.url.split('/').at(-2)
+    })
 
+    //Gets first evolution/s
+    if (data.chain.evolves_to.length) {
+      for(let i = 0; i < data.chain.evolves_to.length; i++) {
+        this.pokemonEvolution.push({
+          name: data.chain.evolves_to[i].species.name,
+          id: data.chain.evolves_to[i].species.url.split('/').at(-2)
+        })
+      }
+    }
 
-
-
-  getEvolution() {
-
+    //Gets the 3rd Evolution in case it exists
+    if (data.chain.evolves_to[0].evolves_to.length) {
+      this.pokemonEvolution.push({
+        name: data.chain.evolves_to[0].evolves_to[0].species.name,
+        id: data.chain.evolves_to[0].evolves_to[0].species.url.split('/').at(-2)
+      })
+    }
   }
-
-  getEvolves(chain: any) {
-    this.pokemonEvo.push({
-      id: chain.species.url.split('/').at(-2),
-      name: chain.species.name
-    });
-
-    if (chain.evolves_to.length) {
-      this.getEvolves(chain.evolves_to[0]);
-    };
-  }
-
-
-  // next: (response: any) => {
-  //   this.pokemonEvolution = {
-  //     name: response.chain.species.name,
-  //     id: response.chain.species.url.split('/').at(-2)
-  //   }
-  //   console.log('evo info',response)
-  // }
-
-
-  // next: (response: any) => {
-  //   this.pokemonEvo = this.getEvolves(response.chain)
-
-  //   if (response.chain.evolves_to.length) {
-  //     this.getEvolves(response.chain.evolves_to[0])
-  //   }
-  //   console.log('?',this.pokemonEvo)
-  // }
 
   getTypeColor(pokemon: PokemonId): string {
     return this.pokemonService.getType(pokemon);

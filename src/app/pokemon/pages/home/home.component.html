@@ -6,7 +6,7 @@
       
       <!-- Search -->
       <app-pokemon-input
-      (onDebounce)="search($event)"
+      (onEnter)="search($event)"
       >
       </app-pokemon-input>
 
@@ -21,7 +21,7 @@
       <!-- pokemon cards -->
       <div class="row">
         <div class="col">
-          <!-- <app-pokemon-cards></app-pokemon-cards> -->
+
             <div *ngIf="anError"
                   class="alert alert-danger mt-3">
                   Can't find the pokemon

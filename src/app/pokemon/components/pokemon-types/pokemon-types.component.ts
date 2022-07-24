@@ -41,7 +41,7 @@ export class PokemonTypesComponent implements OnInit {
   constructor(private pokemonService: PokemonService) {}
 
   getClassCSS( type: string ): string {
-    return (type === this.activeType ) ? 'btn btn-primary' : 'btn btn-outline-primary'
+    return (type === this.activeType ) ? 'btn btn-dark' : 'btn btn-outline-dark'
   }
 
   activateType( type: any ) {

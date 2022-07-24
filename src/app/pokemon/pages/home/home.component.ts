@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import {  Pokemon, PokemonId } from '../../interfaces/pokemon.interface';
+import {  PokemonId } from '../../interfaces/pokemon.interface';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
@@ -24,11 +24,7 @@ export class HomeComponent {
   showSuggestions: boolean = false;
   pokemonFinder!: FormGroup;
 
-  constructor( private pokemonService: PokemonService ) { 
-    // this.pokemonFinder = this._builder.group({
-    //   this.term['',Validators.required]
-    // })
-  }
+  constructor( private pokemonService: PokemonService ) { }
 
   search(term: string) {
     this.anError = false
