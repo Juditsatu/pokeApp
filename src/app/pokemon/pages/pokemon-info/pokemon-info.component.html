@@ -1,4 +1,4 @@
-<div class="container m-4">
+<div class="container">
   <div class="d-flex justify-content-between m-2">
     <h1>{{ pokemon.name | titlecase }}</h1>
     <button [routerLink]="['']" class="btn btn-outline-dark">Back Home</button>
@@ -29,7 +29,6 @@
         <h5>{{ pokemon.weight }} lbs</h5>
       </div>
       <div class="col">
-        <!-- src="{{pokemon.sprites.other?.['official-artwork']?.front_default}}" -->
         <img 
         src="{{pokemon.sprites.other?.['official-artwork']?.front_default}}"
         alt="{{ pokemon.name }}"

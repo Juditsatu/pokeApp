@@ -1,27 +1,73 @@
-# PokeApp
+# Pokemon App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.5.
+The Pokemon App is an Angular application that uses the [Poke API](https://pokeapi.co/) to load and filter through Pokemon Cards. This is Challenge #4 from [NUWE's IT Academy - Lliga de Programació](https://nuwe.io/event/it-academy-liga-de-programacion).
+
+## **Preview**
+
+## ![tree diagram](src/assets/pokeApp-preview.gif)
+
+---
+
+## :wrench: **Tech used in this project**
+
+In this project I used Angular and Boostrap5 to develop a web app that initially loads 24 Pokemon Cards with Angular's Http Client and upon clicking any of the cards the user is presented with basic stats, specie's information, and evolution chain of the chosen Pokemon. The front page allows users to search by name of the loaded Pokemon. The background color of the cards as well as the border colors of the tags correspond to the 20 different pokemon types with Angular's NG class directive and conditional styling. The site is fully-responsive through the use of Bootstrap5 breakpoints.
+
+---
+
+## :mortar_board: **What did I learn from this project**
+
+To use and understand an API with nested urls. To understand how to display various properties, since the pokemon API has a lot of information. I have required the use of different functions to get the correct data. Some by using loops to access the properties in the array. Each filter and search process is implemented in the different components, using the Angular services to share data.
+
+---
+
+## :memo: **What do I still need to do**
+
+1. Functional filtering through type tags.
+
+2. Dynamic search.
+
+3. Pagination or Load More trough lazy load.
+
+4. Design and style the app.
+
+
+---
+
+## :seedling: **Getting Started with this project**
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Clone or fork the Repo, and ensure that you have the [Angular CLI](https://github.com/angular/angular-cli) installed.
 
-## Build
+In the project directory.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm install
+```
 
-## Running unit tests
+In the project directory.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+ng serve --open or ng s -o
+```
 
-## Running end-to-end tests
+## :bookmark_tabs: **Usage Instructions**
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Upon starting live server, 24 Pokemon cards will load. Type in the name of the Pokemon you want to find in the search field, press enter to load the card, an error message will appear if the name is written incorrectly. 
+Click on any of the cards to view that Pokemon's stats. Click on any evolution to load that pokemon stats.
 
-## Further help
+## Contributing
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
